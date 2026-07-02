@@ -1,34 +1,58 @@
 ﻿services:
-  users-db:
+  accounts-db:
     image: postgres:16
-    container_name: user_db_postgres
+    container_name: accounts_db_postgres
     environment:
-      POSTGRES_DB: Db.Users
+      POSTGRES_DB: Db.Accounts
       POSTGRES_USER: ${PG_USER}
       POSTGRES_PASSWORD: ${PG_PASSWORD}
     ports:
       - "5439:5432"
     volumes:
-      - users_pg_data:/var/lib/postgresql/data
+      - accounts_pg_data:/var/lib/postgresql/data
     networks:
       - microsservicos-net
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres -d Db.Users" ]
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d Db.Accounts" ]
       interval: 10s
       timeout: 5s
       retries: 10
       
+      
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - microsservicos-net
+    restart: unless-stopped
 
-  users-api:
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
     depends_on:
-      users-db:
+      - prometheus
+    networks:
+      - microsservicos-net
+      
+
+  accounts-api:
+    depends_on:
+      accounts-db:
         condition: service_healthy
       dynamodb-local: 
         condition: service_started
     
     
 volumes:
-  users_pg_data:
+  prometheus-data:
+  accounts_pg_data:
 
 
 networks:

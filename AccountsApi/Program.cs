@@ -9,6 +9,7 @@ using FluentValidation;
 using Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using Prometheus;
 using UsersApi.Configs;
 using UsersApi.Middlewares;
 using UsersApi.Service;
@@ -96,6 +97,9 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
+
+
+app.UseHttpMetrics();
 
 app.MapHealthChecks("/health");
 
