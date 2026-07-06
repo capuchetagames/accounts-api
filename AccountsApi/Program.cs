@@ -109,6 +109,6 @@ app.MapControllers();
 
 
 
-Console.WriteLine("UsersApi Up and Running!");
+Console.WriteLine("Account API Up and Running!");
 
 app.Run();
