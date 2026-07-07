@@ -7,7 +7,7 @@
       POSTGRES_USER: ${PG_USER}
       POSTGRES_PASSWORD: ${PG_PASSWORD}
     ports:
-      - "5439:5432"
+      - "5436:5432"
     volumes:
       - accounts_pg_data:/var/lib/postgresql/data
     networks:
@@ -17,29 +17,6 @@
       interval: 10s
       timeout: 5s
       retries: 10
-      
-      
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    volumes:
-      - prometheus-data:/prometheus
-    ports:
-      - "9090:9090"
-    networks:
-      - microsservicos-net
-    restart: unless-stopped
-
-
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    depends_on:
-      - prometheus
-    networks:
-      - microsservicos-net
       
 
   accounts-api:
@@ -51,7 +28,6 @@
     
     
 volumes:
-  prometheus-data:
   accounts_pg_data:
 
 
