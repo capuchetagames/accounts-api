@@ -19,7 +19,7 @@ namespace AccountsApi.Controllers;
 /// Gerencia as operações CRUD para os usuários da plataforma.
 /// </summary>
 [ApiController]
-[Route("/[controller]")]
+[Route("api/[controller]")]
 public class AccountController : ControllerBase
 {
     private readonly IAccountRepository _accountRepository;
