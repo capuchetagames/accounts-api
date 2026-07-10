@@ -11,7 +11,7 @@ public static class SwaggerConfiguration
         {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "UsersApi",
+                Title = "Accounts-Api",
                 Version = "v1",
                 Description = "Api para login de usuários e cadastro de Usuários.",
                 Contact = new Microsoft.OpenApi.Models.OpenApiContact()

@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,6 +10,9 @@ public static class AuthenticationExtensions
 {
     public static IHostApplicationBuilder AddJwtAuthentication(this IHostApplicationBuilder builder)
     {
+        JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+        
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

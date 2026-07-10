@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AccountsApi.Service.Validator;
 using Core;
 using Core.Dtos;
 using Core.Entity;
@@ -68,13 +69,14 @@ public class AuthController : ControllerBase
                 return BadRequest(validationResult.ToDictionary()); 
             }
         
-            _logger.LogInformation($"Tentativa de login para o usuário: {loginDto.Name}");
-        
-            var user = _accountRepository.GetUserByCpf(loginDto.Cpf);
+            _logger.LogInformation($"Tentativa de login para o usuário: {loginDto.Cpf}");
+            
+            
+            var user = _accountRepository.GetUserByCpf(CpfValidator.Normalize(loginDto.Cpf));
         
             if(user == null)
             {
-                _logger.LogWarning($"Falha na autenticação: {loginDto.Name}. Usuário não encontrado.");
+                _logger.LogWarning($"Falha na autenticação: {loginDto.Cpf}. Usuário não encontrado.");
                 return Unauthorized(new { message = "Usuário ou senha inválidos." });
             }
             
@@ -82,19 +84,19 @@ public class AuthController : ControllerBase
             
             if (verificationResult == PasswordVerificationResult.Failed)
             {
-                _logger.LogWarning($"Falha na autenticação: {loginDto.Name}. Senha inválida.");
+                _logger.LogWarning($"Falha na autenticação: {loginDto.Cpf}. Senha inválida.");
                 return Unauthorized(new { message = "Usuário ou senha inválidos." });
             }
             
             if (verificationResult == PasswordVerificationResult.SuccessRehashNeeded)
             {
-                _logger.LogInformation($"Usuário {loginDto.Name} autenticado. Atualizando hash de senha para novo padrão.");
+                _logger.LogInformation($"Usuário {loginDto.Cpf} autenticado. Atualizando hash de senha para novo padrão.");
                 // Atualiza o hash no banco com o novo padrão, de forma transparente
                 user.PasswordHash = _passwordHasher.HashPassword(user, loginDto.Password);
                 _accountRepository.Update(user); // Salva o novo hash
             }
             
-            _logger.LogInformation($"Usuário {loginDto.Name} autenticado com sucesso.");
+            _logger.LogInformation($"Usuário {loginDto.Cpf} autenticado com sucesso.");
         
         
             var token = GenerateToken(user.Id, user.Role);

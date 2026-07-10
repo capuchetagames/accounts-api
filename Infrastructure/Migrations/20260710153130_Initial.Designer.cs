@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260710121054_Initial")]
+    [Migration("20260710153130_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -41,8 +41,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TIMESTAMP");
 
-                    b.Property<DateTime>("CreatedBy")
-                        .HasColumnType("TIMESTAMP");
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -65,7 +65,20 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Cpf")
+                        .IsUnique();
+
+                    b.HasIndex("CreatedBy");
+
                     b.ToTable("Accounts", (string)null);
+                });
+
+            modelBuilder.Entity("Core.Entity.User", b =>
+                {
+                    b.HasOne("Core.Entity.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 #pragma warning restore 612, 618
         }

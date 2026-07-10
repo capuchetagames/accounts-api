@@ -15,5 +15,5 @@ public class User : EntityBase
     
     public required bool IsActive  { get; set; }
     
-    public DateTime CreatedBy { get; set; }
+    public Guid? CreatedBy { get; set; }
 }

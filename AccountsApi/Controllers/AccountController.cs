@@ -1,4 +1,7 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
+using AccountsApi.Service.Validator;
 using Core;
 using Core.Dtos;
 using Core.Entity;
@@ -133,19 +136,33 @@ public class AccountController : ControllerBase
         try
         {
             var validationResult =  _validator.Validate(userInput);
-        
+            
             if (!validationResult.IsValid)
             {
                 return BadRequest(validationResult.ToDictionary()); 
             }
             
+            
+            var userGuid = ValidateUserToken(Role.Admin);
+            
+            
+            
+            if(userGuid == Guid.Empty)
+            {
+                var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+                
+                return Unauthorized($"user: {userGuid} userRole: {userRole}");
+            }
+            
+            
             var user = new User()
             {
                 Name = userInput.Name,
                 Email = userInput.Email,
-                Cpf = userInput.Cpf,
+                Cpf = CpfValidator.Normalize(userInput.Cpf),
                 PasswordHash = "",
                 Role = userInput.Role,
+                CreatedBy = userGuid,
                 IsActive = true
             };
             
@@ -157,7 +174,7 @@ public class AccountController : ControllerBase
             {
                 Id = user.Id,
                 Name = user.Name,
-                Cpf = user.Cpf,
+                Cpf = CpfValidator.Format(user.Cpf),
                 Email = user.Email,
                 Role = user.Role
             };
@@ -169,6 +186,32 @@ public class AccountController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Erro interno", error = e.Message });
         }
     }
+    
+    
+    private Guid ValidateUserToken(Role validateRole)
+    {
+        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+        
+        var role = new Role();
+            
+        if(!string.IsNullOrEmpty(userRole))
+        {
+            role = Enum.Parse<Role>(userRole);
+        }
+            
+        //var username = User.FindFirst(ClaimTypes.Name)?.Value;
+        var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+        var userGuid = Guid.Empty;
+            
+        if(!string.IsNullOrEmpty(userId) || role == validateRole)
+        {
+            userGuid = Guid.Parse(userId);
+        }
+        
+        return userGuid;
+    }
+    
     
     /// <summary>
     /// Registra um novo usuário na plataforma.
@@ -185,7 +228,7 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(UserResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> PostNewUser([FromBody] BaseUserDto userDto)
+    public async Task<IActionResult> RegisterNewUser([FromBody] BaseUserDto userDto)
     {
         try
         {
@@ -214,7 +257,7 @@ public class AccountController : ControllerBase
             {
                 Id = user.Id,
                 Name = user.Name,
-                Cpf = user.Cpf,
+                Cpf = CpfValidator.Format(user.Cpf),
                 Email = user.Email,
                 Role = user.Role
             };
