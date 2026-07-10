@@ -80,9 +80,9 @@ public class AccountController : ControllerBase
     /// <remarks>
     /// Acesso restrito a usuários com permissão de 'Admin'.
     /// </remarks>
-    /// <param name="id">O ID (int) do usuário.</param>
+    /// <param name="id">O ID (Guid) do usuário.</param>
     /// <returns>O objeto User.</returns>
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:Guid}")]
     [Authorize(Policy = nameof(Role.Admin))]
     [ProducesResponseType(typeof(UserResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

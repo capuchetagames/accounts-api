@@ -7,5 +7,5 @@ public interface IAccountRepository : IRepository<User>
     User? GetUserByEmail(string email);
     User? GetUserByName(string username);
     
-    User? GetUserByCpf(int cpf);
+    User? GetUserByCpf(string cpf);
 }

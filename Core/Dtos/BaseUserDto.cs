@@ -13,7 +13,7 @@ public class BaseUserDto
     /// <summary>
     /// Cpf do usuário.
     /// </summary>
-    public required int Cpf  { get; set; }
+    public required string Cpf  { get; set; }
     
     /// <summary>
     /// Email de login do usuário.

@@ -31,8 +31,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Cpf")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Cpf")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(11)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TIMESTAMP");

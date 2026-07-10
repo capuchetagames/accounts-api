@@ -1,3 +1,4 @@
+using AccountsApi.Service.Extensions;
 using Core.Dtos;
 using FluentValidation;
 
@@ -18,7 +19,7 @@ public class UserValidator : AbstractValidator<BaseUserDto>
         
         RuleFor(user => user.Cpf)
             .NotEmpty().WithMessage("O Cpf é Obrigatório.")
-            .Length(11).WithMessage("O Cpf deve ter 11 caracteres.");
+            .MustBeValidCpf();
         
 
         RuleFor(user => user.Password)

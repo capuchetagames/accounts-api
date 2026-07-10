@@ -24,7 +24,7 @@ public class AccountRepository : EfRepository<User>, IAccountRepository
         return user;
     }
 
-    public User? GetUserByCpf(int cpf)
+    public User? GetUserByCpf(string cpf)
     {
         var user = DbSet.FirstOrDefault(u => u.Cpf == cpf);
         

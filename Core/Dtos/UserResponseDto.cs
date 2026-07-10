@@ -13,7 +13,7 @@ public class UserResponseDto
     /// <summary>
     /// O Cpf do usuário.
     /// </summary>
-    public int Cpf { get; set; }
+    public string Cpf { get; set; }
 
     /// <summary>
     /// O nome de usuário (username).

@@ -17,7 +17,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "VARCHAR(100)", nullable: false),
-                    Cpf = table.Column<int>(type: "INTEGER", nullable: false),
+                    Cpf = table.Column<string>(type: "VARCHAR(11)", nullable: false),
                     Email = table.Column<string>(type: "VARCHAR(100)", nullable: false),
                     PasswordHash = table.Column<string>(type: "VARCHAR(100)", nullable: false),
                     Role = table.Column<string>(type: "VARCHAR(10)", nullable: false),

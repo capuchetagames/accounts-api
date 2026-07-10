@@ -7,7 +7,7 @@ public class User : EntityBase
 { 
     public required string Name  { get; set; }
     
-    public required int Cpf  { get; set; }
+    public required string Cpf  { get; set; }
     public required string Email  { get; set; }
     
     public required string PasswordHash  { get; set; }

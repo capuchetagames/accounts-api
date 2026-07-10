@@ -9,7 +9,7 @@ public class LoginDto
     /// <summary>
     /// O Cpf do usuário
     /// </summary>
-    public required int Cpf  { get; set; }
+    public required string Cpf  { get; set; }
     
     /// <summary>
     /// A senha do usuário.
