@@ -1,7 +1,7 @@
 using Core.Dtos;
 using FluentValidation;
 
-namespace UsersApi.Service.Validator;
+namespace AccountsApi.Service.Validator;
 
 public class LoginValidator : AbstractValidator<LoginDto>
 {

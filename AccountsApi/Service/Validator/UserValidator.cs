@@ -1,7 +1,7 @@
 using Core.Dtos;
 using FluentValidation;
 
-namespace UsersApi.Service.Validator;
+namespace AccountsApi.Service.Validator;
 
 public class UserValidator : AbstractValidator<BaseUserDto>
 {
@@ -14,6 +14,12 @@ public class UserValidator : AbstractValidator<BaseUserDto>
         RuleFor(user => user.Email)
             .NotEmpty().WithMessage("O Email é Obrigatório.")
             .EmailAddress().WithMessage("O formato do Email não é válido.");
+        
+        
+        RuleFor(user => user.Cpf)
+            .NotEmpty().WithMessage("O Cpf é Obrigatório.")
+            .Length(11).WithMessage("O Cpf deve ter 11 caracteres.");
+        
 
         RuleFor(user => user.Password)
             .NotEmpty().WithMessage("A Senha é obrigatória.")

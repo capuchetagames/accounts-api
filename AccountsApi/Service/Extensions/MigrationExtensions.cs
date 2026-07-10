@@ -1,7 +1,7 @@
 using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
-namespace UsersApi.Service;
+namespace AccountsApi.Service.Extensions;
 
 public static class MigrationExtensions
 {

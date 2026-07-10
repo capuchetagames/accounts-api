@@ -1,7 +1,7 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 
-namespace DynamoDb.Logging;
+namespace AccountsApi.Service.DynamoLogging;
 
 public class DynamoDbLogger : ILogger
 {

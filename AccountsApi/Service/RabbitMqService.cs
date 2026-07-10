@@ -4,7 +4,7 @@ using Core.Models;
 using RabbitMQ.Client;
 using UsersApi.Configs;
 
-namespace UsersApi.Service;
+namespace AccountsApi.Service;
 
 public class RabbitMqService : IRabbitMqService, IAsyncDisposable
 {

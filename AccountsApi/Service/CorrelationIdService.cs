@@ -1,6 +1,6 @@
 using Core.Models;
 
-namespace UsersApi.Service;
+namespace AccountsApi.Service;
 
 public class CorrelationIdService : ICorrelationIdService
 {

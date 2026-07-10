@@ -1,6 +1,6 @@
 using Amazon.DynamoDBv2;
 
-namespace DynamoDb.Logging;
+namespace AccountsApi.Service.DynamoLogging;
 
 public static class DynamoDbLoggerExtensions
 {

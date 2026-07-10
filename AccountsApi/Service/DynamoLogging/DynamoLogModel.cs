@@ -1,4 +1,4 @@
-namespace DynamoDb.Logging;
+namespace AccountsApi.Service.DynamoLogging;
 
 public class DynamoLogModel
 {

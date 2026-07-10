@@ -1,6 +1,6 @@
 using Amazon.DynamoDBv2;
 
-namespace DynamoDb.Logging;
+namespace AccountsApi.Service.DynamoLogging;
 
 [ProviderAlias("DynamoDb")]
 public sealed class DynamoDbLoggerProvider : ILoggerProvider, ISupportExternalScope

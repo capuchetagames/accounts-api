@@ -1,10 +1,12 @@
 using System.Text.Json.Serialization;
+using AccountsApi.Service;
+using AccountsApi.Service.DynamoLogging;
+using AccountsApi.Service.Extensions;
+using AccountsApi.Service.Validator;
 using Amazon.DynamoDBv2;
 using Core.Entity;
 using Core.Models;
 using Core.Repository;
-using DynamoDb.Logging;
-using DynamoDb.Services;
 using FluentValidation;
 using Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity;
@@ -12,8 +14,6 @@ using Microsoft.Extensions.Options;
 using Prometheus;
 using UsersApi.Configs;
 using UsersApi.Middlewares;
-using UsersApi.Service;
-using UsersApi.Service.Validator;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,7 +1,7 @@
 using Core.Models;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace UsersApi.Service;
+namespace AccountsApi.Service;
 
 public class MemCacheService(IMemoryCache cache) : ICacheService
 {

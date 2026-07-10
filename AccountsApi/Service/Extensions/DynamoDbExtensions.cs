@@ -1,10 +1,9 @@
 using Amazon;
 using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.DataModel;
 using Amazon.Runtime;
 using Amazon.Runtime.CredentialManagement;
 
-namespace DynamoDb.Services;
+namespace AccountsApi.Service.Extensions;
 
 public static class DynamoDbExtensions
 {
