@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace UsersApi.Middlewares;
+namespace AccountsApi.Middlewares;
 
 public class DynamoLoggingMiddleware
 {

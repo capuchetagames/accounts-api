@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
-namespace UsersApi.Controllers;
+namespace AccountsApi.Controllers;
 
 /// <summary>
 /// Gerencia a autenticação de usuários e a geração de tokens JWT.

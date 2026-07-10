@@ -1,7 +1,7 @@
 using Core.Models;
 using Microsoft.Extensions.Primitives;
 
-namespace UsersApi.Middlewares;
+namespace AccountsApi.Middlewares;
 
 public class LogMiddleware
 {

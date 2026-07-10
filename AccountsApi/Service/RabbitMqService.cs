@@ -1,8 +1,8 @@
 using System.Text;
 using System.Text.Json;
+using AccountsApi.Configs;
 using Core.Models;
 using RabbitMQ.Client;
-using UsersApi.Configs;
 
 namespace AccountsApi.Service;
 

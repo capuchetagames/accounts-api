@@ -1,7 +1,7 @@
 using System.Reflection;
 using Microsoft.OpenApi.Models;
 
-namespace UsersApi.Configs;
+namespace AccountsApi.Configs;
 
 public static class SwaggerConfiguration
 {

@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+using AccountsApi.Configs;
+using AccountsApi.Middlewares;
 using AccountsApi.Service;
 using AccountsApi.Service.DynamoLogging;
 using AccountsApi.Service.Extensions;
@@ -12,8 +14,6 @@ using Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Prometheus;
-using UsersApi.Configs;
-using UsersApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,4 +1,4 @@
-namespace UsersApi.Configs;
+namespace AccountsApi.Configs;
 
 public class RabbitMqSettings
 {

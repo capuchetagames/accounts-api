@@ -1,4 +1,4 @@
-namespace UsersApi.Middlewares;
+namespace AccountsApi.Middlewares;
 
 public class CorrelationMiddleware
 {

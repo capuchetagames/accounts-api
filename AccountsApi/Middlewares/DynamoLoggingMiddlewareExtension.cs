@@ -1,4 +1,4 @@
-namespace UsersApi.Middlewares;
+namespace AccountsApi.Middlewares;
 
 public static class DynamoLoggingMiddlewareExtension
 {
