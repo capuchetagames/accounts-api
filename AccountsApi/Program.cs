@@ -23,6 +23,12 @@ var serviceProvider = builder.Services.BuildServiceProvider();
 var dynamoClient    = serviceProvider.GetRequiredService<IAmazonDynamoDB>();
 var logTableName    = builder.Configuration["DynamoDb:LogTableName"];
 
+// Com DynamoDB local, cria a tabela de logs se ainda não existir
+if (builder.Configuration.GetValue<bool>("DynamoDb:UseLocal"))
+{
+    await DynamoDbExtensions.EnsureLogTableExistsAsync(dynamoClient, logTableName);
+}
+
 
 builder.Logging
     .ClearProviders()                      
@@ -100,6 +106,8 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpMetrics();
+
+app.MapMetrics();
 
 app.MapHealthChecks("/health");
 

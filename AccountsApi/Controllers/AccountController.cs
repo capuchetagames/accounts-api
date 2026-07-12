@@ -243,7 +243,7 @@ public class AccountController : ControllerBase
             {
                 Name = userDto.Name,
                 Email = userDto.Email,
-                Cpf = userDto.Cpf,
+                Cpf = CpfValidator.Normalize(userDto.Cpf),
                 PasswordHash = "",
                 Role = Role.Donor,
                 IsActive = true
@@ -325,7 +325,7 @@ public class AccountController : ControllerBase
 
             user.Name = userInput.Name;
             user.Email = userInput.Email;
-            user.Cpf = userInput.Cpf;
+            user.Cpf = CpfValidator.Normalize(userInput.Cpf);
             user.Role = userInput.Role;
             user.IsActive = userInput.IsActive;
             
