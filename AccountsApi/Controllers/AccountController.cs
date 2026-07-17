@@ -222,7 +222,7 @@ public class AccountController : ControllerBase
     /// </remarks>
     /// <param name="userDto">Dados básicos do novo usuário (nome, Cpf, email, senha).</param>
     /// <returns>O usuário recém-criado.</returns>
-    [HttpPost("/auth/register")]
+    [HttpPost("register")]
     [AllowAnonymous]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(UserResponseDto), StatusCodes.Status201Created)]
