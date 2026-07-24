@@ -1,6 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using AccountsApi.Service.Validator;
 using Core;
 using Core.Dtos;
@@ -11,7 +10,6 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using RabbitMQ.Client;
 
 namespace AccountsApi.Controllers;
 
@@ -132,7 +130,7 @@ public class AccountController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public IActionResult Post([FromBody] UserInput userInput)
+    public async Task<IActionResult> Post([FromBody] UserInput userInput)
     {
         try
         {
@@ -182,6 +180,20 @@ public class AccountController : ControllerBase
                 Role = user.Role
             };
             
+            // simula persistência
+            var @event = new UserCreatedEvent(
+                responseDto.Id,
+                responseDto.Name,
+                responseDto.Email
+            );
+
+            await _rabbitMq.PublishAsync(
+                exchange: "users.events",
+                routingKey: "user.created",
+                message: @event
+            );
+            
+            
             return CreatedAtAction(nameof(Get), new { id = user.Id }, responseDto);
         }
         catch (Exception e)
@@ -202,7 +214,6 @@ public class AccountController : ControllerBase
             role = Enum.Parse<Role>(userRole);
         }
             
-        //var username = User.FindFirst(ClaimTypes.Name)?.Value;
         var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
 
         var userGuid = Guid.Empty;
@@ -288,7 +299,7 @@ public class AccountController : ControllerBase
                 Role = user.Role
             };
             
-            // simula persistência
+            
             var @event = new UserCreatedEvent(
                 responseDto.Id,
                 responseDto.Name,
