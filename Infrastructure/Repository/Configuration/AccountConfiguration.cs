@@ -15,6 +15,7 @@ public class AccountConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(x => x.Cpf).IsUnique();
         builder.Property(x=>x.Cpf).HasColumnType("VARCHAR(11)").IsRequired();
         builder.Property(x => x.Name).HasColumnType("VARCHAR(100)").IsRequired();
+        builder.HasIndex(x => x.Email).IsUnique();
         builder.Property(x=>x.Email).HasColumnType("VARCHAR(100)").IsRequired();
         builder.Property(x => x.PasswordHash).HasColumnType("VARCHAR(100)").IsRequired();
         builder.Property(x=>x.Role).HasColumnType("VARCHAR(10)").IsRequired();

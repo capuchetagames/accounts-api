@@ -131,6 +131,7 @@ public class AccountController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public IActionResult Post([FromBody] UserInput userInput)
     {
         try
@@ -141,12 +142,9 @@ public class AccountController : ControllerBase
             {
                 return BadRequest(validationResult.ToDictionary()); 
             }
-            
-            
+
             var userGuid = ValidateUserToken(Role.Admin);
-            
-            
-            
+
             if(userGuid == Guid.Empty)
             {
                 var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
@@ -154,6 +152,11 @@ public class AccountController : ControllerBase
                 return Unauthorized($"user: {userGuid} userRole: {userRole}");
             }
             
+            var conflictResult = ConflictIfEmailExists(userInput.Email);
+            if (conflictResult is not null)
+            {
+                return conflictResult;
+            }
             
             var user = new User()
             {
@@ -211,7 +214,23 @@ public class AccountController : ControllerBase
         
         return userGuid;
     }
-    
+
+    private IActionResult? ConflictIfEmailExists(string email)
+    {
+        var verifyEmail = _accountRepository.GetUserByEmail(email);
+        
+        if (verifyEmail is not null)
+        {
+            return Conflict(new ProblemDetails
+            {
+                Title = "Email já cadastrado",
+                Detail = $"O email '{email}' já está em uso.",
+                Status = StatusCodes.Status409Conflict
+            });
+        }
+
+        return null;
+    }
     
     /// <summary>
     /// Registra um novo usuário na plataforma.
@@ -228,6 +247,7 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(UserResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> RegisterNewUser([FromBody] BaseUserDto userDto)
     {
         try
@@ -237,6 +257,12 @@ public class AccountController : ControllerBase
             if (!validationResult.IsValid)
             {
                 return BadRequest(validationResult.ToDictionary()); 
+            }
+            
+            var conflictResult = ConflictIfEmailExists(userDto.Email);
+            if (conflictResult is not null)
+            {
+                return conflictResult;
             }
             
             var user = new User()
@@ -284,9 +310,9 @@ public class AccountController : ControllerBase
         {
             return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Erro interno", error = e.Message });
         }
-
-        
     }
+    
+    
     
     /// <summary>
     /// Atualiza um usuário existente.
@@ -321,6 +347,12 @@ public class AccountController : ControllerBase
             if (user == null)
             {
                 return NotFound($"Usuário {userInput.Name} ({userInput.Email}) não encontrado.");
+            }
+            
+            var conflictResult = ConflictIfEmailExists(userInput.Email);
+            if (conflictResult is not null)
+            {
+                return conflictResult;
             }
 
             user.Name = userInput.Name;
@@ -378,45 +410,5 @@ public class AccountController : ControllerBase
         {
             return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Erro interno", error = e.Message });
         }
-    }
-
-
-    //TODO remove
-    private async void Teste()
-    {
-        var factory = new ConnectionFactory() { 
-            HostName = "rabbitmq",
-            UserName = "admin",
-            Password = "admin"};
-        
-        factory.AutomaticRecoveryEnabled = true;
-
-        await using var connection = await factory.CreateConnectionAsync();
-        await using var channel = await connection.CreateChannelAsync();
-        
-        // await channel.QueueDeclareAsync(
-        //     queue: "new-user-queue",
-        //     durable: true,
-        //     exclusive: false,
-        //     autoDelete: false,
-        //     arguments: null
-        // );
-        
-        
-        await channel.ExchangeDeclareAsync(
-            exchange: "users.events",
-            type: ExchangeType.Topic,
-            durable: true
-        );
-        
-        var message = "Hello RabbitMQ -novo USUARIO";
-        var body = Encoding.UTF8.GetBytes(message);
-
-        await channel.BasicPublishAsync(
-            exchange: "users.events",
-            routingKey: "new-user-queue",
-            body: body
-        );
-        
     }
 }

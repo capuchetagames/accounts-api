@@ -65,7 +65,7 @@ builder.Services.AddScoped(typeof(IBaseLogger<>), typeof(BaseLogger<>));
 builder.AddJwtAuthentication();
 builder.Services.AddPolicyAuthorization();
 
-builder.Services.AddHealthChecks();
+builder.Services.AddHealthChecks().ForwardToPrometheus();
 
 builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection("RabbitMq"));
 
